@@ -45,7 +45,7 @@
 
     .unit-toggle {
       display: flex; align-items: center;
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      background: white; border: 1.5px solid var(--cream-dark);
       border-radius: 20px; padding: 3px; gap: 2px;
     }
     .unit-btn {
@@ -53,9 +53,9 @@
       letter-spacing: 0.08em; text-transform: uppercase;
       padding: 4px 12px; border-radius: 16px; border: none;
       cursor: pointer; transition: background 0.2s, color 0.2s;
-      background: transparent; color: var(--sage-pale);
+      background: transparent; color: var(--muted);
     }
-    .unit-btn.active { background: var(--cream); color: var(--forest); }
+    .unit-btn.active { background: var(--forest); color: var(--cream); }
 
     /* ── HERO ── */
     .hero {
@@ -261,17 +261,6 @@
 
 <nav>
   <div class="nav-logo">EatFit 💪</div>
-  <div class="nav-right">
-    <ul class="nav-links">
-      <li><a href="#recipes">Recipes</a></li>
-      <li><a href="#recipes">Snacks</a></li>
-      <li><a href="#recipes">Meal Prep</a></li>
-    </ul>
-    <div class="unit-toggle">
-      <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric</button>
-      <button class="unit-btn" id="btnImperial" onclick="setUnit('imperial')">Imperial</button>
-    </div>
-  </div>
 </nav>
 
 <section class="hero">
@@ -294,6 +283,10 @@
         <option value="snack">Snack</option>
         <option value="entree">Entree</option>
       </select>
+      <div class="unit-toggle">
+        <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric</button>
+        <button class="unit-btn" id="btnImperial" onclick="setUnit('imperial')">Imperial</button>
+      </div>
     </div>
   </div>
 
