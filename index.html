@@ -39,7 +39,8 @@
       padding: 0 48px; height: 60px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.25);
     }
-    .nav-logo { font-size: 1.4rem; font-weight: 800; color: var(--cream); letter-spacing: -0.01em; }
+    .nav-logo { font-size: 1.4rem; font-weight: 800; color: var(--cream); letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+    .nav-logo-img { width: 34px; height: 34px; border-radius: 8px; display: block; }
     .nav-right { display: flex; align-items: center; gap: 32px; }
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a { font-size: 0.78rem; font-weight: 600; color: var(--sage-pale); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
@@ -262,7 +263,7 @@
 <body>
 
 <nav>
-  <div class="nav-logo">EatFit 💪</div>
+  <div class="nav-logo"><img src="eatfit-logo.png" alt="EatFit logo" class="nav-logo-img"/>EatFit</div>
 </nav>
 
 <section class="hero">
@@ -540,7 +541,7 @@
 </section>
 
 <footer>
-  Made with care &nbsp;·&nbsp; <span>EatFit 💪</span> &nbsp;·&nbsp; Your personal recipe book
+  Made with care &nbsp;·&nbsp; <span>EatFit</span> &nbsp;·&nbsp; Your personal recipe book
 </footer>
 
 <script>
