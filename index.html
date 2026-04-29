@@ -226,8 +226,23 @@
     .detail-macro.highlight .detail-macro-value { color: var(--terracotta); }
 
     /* Detail badges */
-    .detail-badges { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px 24px; background: var(--cream); border-bottom: 1px solid var(--cream-dark); }
+    .detail-badges { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding: 14px 24px; background: var(--cream); border-bottom: 1px solid var(--cream-dark); }
+    .detail-badges-left { display: flex; gap: 8px; flex-wrap: wrap; }
     .detail-badge { background: var(--forest); color: var(--cream); font-size: 0.7rem; font-weight: 700; padding: 5px 13px; border-radius: 20px; }
+    /* Show unit toggle on detail page too */
+    .detail-unit-toggle {
+      display: flex; align-items: center;
+      background: white; border: 1.5px solid var(--cream-dark);
+      border-radius: 20px; padding: 3px; gap: 2px; flex-shrink: 0;
+    }
+    .detail-unit-btn {
+      font-family: 'Urbanist', sans-serif; font-size: 0.66rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 11px; border-radius: 16px; border: none;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+      background: transparent; color: var(--muted);
+    }
+    .detail-unit-btn.active { background: var(--forest); color: var(--cream); }
 
     /* Detail body */
     .detail-body { padding: 0 24px; }
@@ -345,6 +360,7 @@
         <span class="filter-label">Filter</span>
         <select class="filter-select" id="categoryFilter" onchange="filterRecipes()">
           <option value="all">All categories</option>
+          <option value="breakfast">Breakfast</option>
           <option value="snack">Snack</option>
           <option value="entree">Entree</option>
           <option value="side">Side</option>
@@ -465,6 +481,47 @@ const recipes = [
     notes: [
       { label: '🍽 Serving ideas', text: 'Great over rice, on a salad, or as an appetizer with tzatziki. Stores well in the fridge for up to 4 days.' },
       { label: '📊 Macro note', text: 'Estimates per serving (~3–4 meatballs). Will vary based on feta brand and whether tzatziki is included.' },
+    ]
+  },
+
+  {
+    id: 'banana-pancakes',
+    title: 'Protein Banana Oat Pancakes',
+    subtitle: 'Fluffy, naturally sweet pancakes packed with protein — ready in minutes with just 5 ingredients.',
+    category: 'breakfast',
+    badges: ['⏱ 5 min prep', '🥞 ~8 pancakes', '🍳 Stovetop'],
+    macros: [
+      { value: '~320', label: 'Cal',     highlight: true },
+      { value: '~30g', label: 'Protein' },
+      { value: '~35g', label: 'Carbs' },
+      { value: '~7g',  label: 'Fat' },
+      { value: '~8g',  label: 'Sugar' },
+      { value: 'whole batch', label: 'Serving' },
+    ],
+    ingredientSections: [
+      {
+        items: [
+          { name: 'Ripe banana', note: 'mashed',          metric: '1 medium',  imperial: '1 medium' },
+          { name: 'Large eggs',                            metric: '2',         imperial: '2' },
+          { name: 'Protein powder', note: 'any flavor',   metric: '30g',       imperial: '1 cup' },
+          { name: 'Rolled oats or oat flour',              metric: '45g',       imperial: '½ cup' },
+          { name: 'Baking powder',                         metric: '1 tsp',     imperial: '1 tsp' },
+          { name: 'Salt',                                  metric: '1 pinch',   imperial: '1 pinch' },
+        ]
+      }
+    ],
+    steps: [
+      '<strong>Mash the banana.</strong> In a large bowl, mash 1 ripe banana thoroughly with a fork until smooth with no large lumps. The riper the banana, the sweeter and easier to mash.',
+      '<strong>Mix the batter.</strong> Add eggs, protein powder, oats, baking powder, and salt. Stir until a thick, cohesive batter forms. If the batter feels too thick to pour, add a small splash of milk and stir to loosen.',
+      '<strong>Heat the pan.</strong> Heat a non-stick skillet or griddle over medium heat. Lightly grease with butter or cooking spray. The pan is ready when a drop of water sizzles on contact.',
+      '<strong>Cook the pancakes.</strong> Pour about ¼ cup of batter per pancake onto the pan. Cook until bubbles form on the surface and the edges look set, about 2–3 minutes. Flip and cook for another 1–2 minutes until golden.',
+      '<strong>Serve.</strong> Transfer to a plate and repeat with remaining batter. Serve warm with toppings of choice — Greek yogurt, fresh fruit, nut butter, or a drizzle of honey all work great.',
+    ],
+    notes: [
+      { label: '🌾 Oats vs. oat flour', text: 'Rolled oats give a heartier, slightly chewier texture. For smoother pancakes, blitz the oats in a blender first to make oat flour before mixing.' },
+      { label: '💪 Protein powder', text: 'Vanilla or unflavored work best. If using a very thick powder, you may need a splash of milk to get the right batter consistency.' },
+      { label: '🌱 Make it dairy-free', text: 'Use any plant-based milk to adjust batter thickness.' },
+      { label: '🧊 Storage', text: 'Leftover pancakes keep in the fridge for up to 3 days and reheat well in a toaster or skillet.' },
     ]
   },
 
@@ -656,7 +713,13 @@ function renderDetail(recipe) {
 
     <div class="detail-macros">${recipe.macros.map(m => macroHTML(m, true)).join('')}</div>
 
-    <div class="detail-badges">${recipe.badges.map(b => `<span class="detail-badge">${b}</span>`).join('')}</div>
+    <div class="detail-badges">
+      <div class="detail-badges-left">${recipe.badges.map(b => `<span class="detail-badge">${b}</span>`).join('')}</div>
+      <div class="detail-unit-toggle">
+        <button class="detail-unit-btn ${!document.body.classList.contains('imperial') ? 'active' : ''}" onclick="setUnit('metric')">Metric</button>
+        <button class="detail-unit-btn ${document.body.classList.contains('imperial') ? 'active' : ''}" onclick="setUnit('imperial')">Imperial</button>
+      </div>
+    </div>
 
     <div class="detail-body">
       <div class="detail-section">
@@ -737,8 +800,18 @@ function filterRecipes() {
 
 function setUnit(unit) {
   document.body.classList.toggle('imperial', unit === 'imperial');
-  document.getElementById('btnMetric').classList.toggle('active', unit === 'metric');
-  document.getElementById('btnImperial').classList.toggle('active', unit === 'imperial');
+  // List view toggles
+  const bm = document.getElementById('btnMetric');
+  const bi = document.getElementById('btnImperial');
+  if (bm) bm.classList.toggle('active', unit === 'metric');
+  if (bi) bi.classList.toggle('active', unit === 'imperial');
+  // Detail view toggles
+  document.querySelectorAll('.detail-unit-btn').forEach(btn => {
+    btn.classList.toggle('active',
+      (unit === 'metric' && btn.textContent.trim() === 'Metric') ||
+      (unit === 'imperial' && btn.textContent.trim() === 'Imperial')
+    );
+  });
 }
 
 /* ═══════════════════════════════════════════════
