@@ -194,13 +194,38 @@
     .card-arrow { display: flex; align-items: center; gap: 4px; color: var(--sage-pale); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.8; }
     .card-arrow svg { width: 12px; height: 12px; }
 
-    /* Macros bar */
-    .macros-bar { background: var(--wood-pale); border-bottom: 1px solid var(--cream-dark); padding: 9px 20px; display: flex; align-items: stretch; }
-    .macro-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 3px 4px; position: relative; }
+    /* Macros bar — card list view */
+    .macros-bar { background: var(--wood-pale); border-bottom: 1px solid var(--cream-dark); padding: 9px 16px; display: grid; grid-template-columns: repeat(6, 1fr); }
+    .macro-item { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 3px 4px; position: relative; }
     .macro-item + .macro-item::before { content: ''; position: absolute; left: 0; top: 15%; height: 70%; width: 1px; background: var(--wood); opacity: 0.3; }
-    .macro-value { font-size: 0.92rem; font-weight: 800; color: var(--forest); line-height: 1; }
-    .macro-label { font-size: 0.54rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .macro-value { font-size: 0.88rem; font-weight: 800; color: var(--forest); line-height: 1; }
+    .macro-label { font-size: 0.52rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
     .macro-item.highlight .macro-value { color: var(--terracotta); }
+
+    /* Detail macros — expandable */
+    .detail-macros-wrap { background: var(--wood-pale); border-bottom: 2px solid var(--cream-dark); }
+    .detail-macros { display: grid; grid-template-columns: repeat(6, 1fr); padding: 14px 20px 10px; cursor: pointer; user-select: none; }
+    .detail-macros:hover { background: rgba(200,151,90,0.12); }
+    .detail-macro { display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
+    .detail-macro + .detail-macro::before { content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 1px; background: var(--wood); opacity: 0.3; }
+    .detail-macro-value { font-size: 1.1rem; font-weight: 800; color: var(--forest); line-height: 1; }
+    .detail-macro-label { font-size: 0.56rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .detail-macro.highlight .detail-macro-value { color: var(--terracotta); }
+    .detail-macros-hint { text-align: center; font-size: 0.58rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 0 20px 10px; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer; }
+    .detail-macros-hint svg { width: 10px; height: 10px; transition: transform 0.3s; }
+    .detail-macros-wrap.open .detail-macros-hint svg { transform: rotate(180deg); }
+
+    /* Expandable micronutrients */
+    .micro-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s cubic-bezier(0.4,0,0.2,1); }
+    .detail-macros-wrap.open .micro-panel { grid-template-rows: 1fr; }
+    .micro-panel-inner { overflow: hidden; }
+    .micro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 4px 20px 16px; }
+    .micro-item { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px dashed rgba(0,0,0,0.07); }
+    .micro-item:nth-last-child(-n+2) { border-bottom: none; }
+    .micro-name { font-size: 0.8rem; font-weight: 400; color: var(--text); }
+    .micro-val { font-size: 0.8rem; font-weight: 700; color: var(--forest); background: rgba(45,80,22,0.07); padding: 2px 8px; border-radius: 8px; }
+    .micro-item:nth-child(odd) { padding-right: 16px; border-right: 1px solid var(--cream-dark); }
+    .micro-item:nth-child(even) { padding-left: 16px; }
 
     .empty-state { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 0.88rem; font-weight: 500; display: none; }
 
@@ -209,41 +234,15 @@
     ═══════════════════════════════════════════════ */
     .recipe-detail { max-width: 640px; margin: 0 auto; padding-bottom: 80px; }
 
-    /* Hero photo */
-    .detail-hero {
-      position: relative; width: 100%; height: 280px; overflow: hidden;
-      background: var(--forest);
-    }
+    .detail-hero { position: relative; width: 100%; height: 280px; overflow: hidden; background: var(--forest); }
     .detail-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .detail-hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(29,41,16,0.85) 0%, rgba(29,41,16,0.2) 60%, transparent 100%);
-    }
-    .detail-hero-content {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 24px 24px 20px;
-    }
+    .detail-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(29,41,16,0.85) 0%, rgba(29,41,16,0.2) 60%, transparent 100%); }
+    .detail-hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 24px 20px; }
     .detail-meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .detail-tag {
-      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
-      color: var(--sage-pale); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
-    }
-    .detail-category-tag {
-      background: rgba(232,160,96,0.3); border: 1px solid rgba(232,160,96,0.5);
-      color: var(--orange-lt); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
-    }
+    .detail-tag { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: var(--sage-pale); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+    .detail-category-tag { background: rgba(232,160,96,0.3); border: 1px solid rgba(232,160,96,0.5); color: var(--orange-lt); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
     .detail-title { font-size: 1.65rem; font-weight: 800; color: #fff; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 4px; }
     .detail-subtitle { font-size: 0.82rem; color: var(--sage-pale); font-weight: 400; line-height: 1.5; }
-
-    /* Detail macros */
-    .detail-macros { background: var(--wood-pale); border-bottom: 2px solid var(--cream-dark); padding: 14px 24px; display: flex; }
-    .detail-macro { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
-    .detail-macro + .detail-macro::before { content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 1px; background: var(--wood); opacity: 0.3; }
-    .detail-macro-value { font-size: 1.15rem; font-weight: 800; color: var(--forest); line-height: 1; }
-    .detail-macro-label { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-    .detail-macro.highlight .detail-macro-value { color: var(--terracotta); }
 
     /* Detail badges */
     .detail-badges { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding: 14px 24px; background: var(--cream); border-bottom: 1px solid var(--cream-dark); }
@@ -424,13 +423,21 @@ const recipes = [
     tag: '🏋️ High Protein · No Bake',
     photo: 'oat-balls.png',
     badges: ['⏱ 15 min', '🧊 No bake', '🍫 12 servings'],
+    servings: '12 balls',
+    servingSize: '1 ball (32g)',
     macros: [
-      { value: '145',  label: 'Cal',       highlight: true },
-      { value: '8g',   label: 'Protein' },
-      { value: '11g',  label: 'Carbs' },
-      { value: '~6g',  label: 'Net Carbs' },
+      { value: '136',  label: 'Cal',      highlight: true },
+      { value: '9g',   label: 'Protein' },
+      { value: '16g',  label: 'Carbs' },
       { value: '7g',   label: 'Fat' },
-      { value: '~0g',  label: 'Sugar' },
+      { value: '12',   label: 'Servings' },
+      { value: '1 ball', label: 'Per serving' },
+    ],
+    micros: [
+      { name: 'Fiber',   value: '~2g' },
+      { name: 'Sugar',   value: '~1g' },
+      { name: 'Sat. fat',value: '~1g' },
+      { name: 'Sodium',  value: '~60mg' },
     ],
     ingredientSections: [
       {
@@ -468,13 +475,21 @@ const recipes = [
     tag: '🫒 Mediterranean · Baked',
     photo: 'meatballs.png',
     badges: ['⏱ 30 min', '🔥 400°F / 200°C', '🍽 4 servings'],
+    servings: '4 servings',
+    servingSize: '~3–4 meatballs',
     macros: [
-      { value: '~320', label: 'Cal',        highlight: true },
-      { value: '~32g', label: 'Protein' },
-      { value: '~12g', label: 'Carbs' },
-      { value: '~14g', label: 'Fat' },
-      { value: '15',   label: 'Meatballs' },
-      { value: '~3–4', label: 'Per serving' },
+      { value: '323',  label: 'Cal',      highlight: true },
+      { value: '30g',  label: 'Protein' },
+      { value: '16g',  label: 'Carbs' },
+      { value: '16g',  label: 'Fat' },
+      { value: '4',    label: 'Servings' },
+      { value: '~3–4 balls', label: 'Per serving' },
+    ],
+    micros: [
+      { name: 'Fiber',   value: '~2g' },
+      { name: 'Sugar',   value: '~4g' },
+      { name: 'Sat. fat',value: '~5g' },
+      { name: 'Sodium',  value: '~498mg' },
     ],
     ingredientSections: [
       {
@@ -516,13 +531,21 @@ const recipes = [
     tag: '🍌 High Protein · Quick',
     photo: 'banana-pancakes.jpg',
     badges: ['⏱ 5 min prep', '🥞 ~8 pancakes', '🍳 Stovetop'],
+    servings: '~8 pancakes',
+    servingSize: '1 pancake',
     macros: [
-      { value: '~320', label: 'Cal',     highlight: true },
-      { value: '~30g', label: 'Protein' },
-      { value: '~35g', label: 'Carbs' },
-      { value: '~7g',  label: 'Fat' },
-      { value: '~8g',  label: 'Sugar' },
-      { value: 'whole batch', label: 'Serving' },
+      { value: '66',   label: 'Cal',      highlight: true },
+      { value: '5g',   label: 'Protein' },
+      { value: '7g',   label: 'Carbs' },
+      { value: '2g',   label: 'Fat' },
+      { value: '~8',   label: 'Servings' },
+      { value: '1 pancake', label: 'Per serving' },
+    ],
+    micros: [
+      { name: 'Fiber',   value: '~1g' },
+      { name: 'Sugar',   value: '~2g' },
+      { name: 'Sat. fat',value: '~0g' },
+      { name: 'Sodium',  value: '~33mg' },
     ],
     ingredientSections: [
       {
@@ -559,13 +582,21 @@ const recipes = [
     tag: '🍠 Simple · Wholesome',
     photo: 'sweet-potatoes.jpg',
     badges: ['⏱ 5 min prep', '🔥 400°F / 200°C', '⏳ 25–35 min'],
+    servings: null,
+    servingSize: '200g',
     macros: [
-      { value: '~100', label: 'Cal',     highlight: true },
-      { value: '~2g',  label: 'Protein' },
-      { value: '~23g', label: 'Carbs' },
-      { value: '~0g',  label: 'Fat' },
-      { value: '~7g',  label: 'Fiber' },
-      { value: 'per half', label: 'Serving' },
+      { value: '212',  label: 'Cal',      highlight: true },
+      { value: '3g',   label: 'Protein' },
+      { value: '40g',  label: 'Carbs' },
+      { value: '5g',   label: 'Fat' },
+      { value: '—',    label: 'Servings' },
+      { value: '200g', label: 'Per serving' },
+    ],
+    micros: [
+      { name: 'Fiber',   value: '~6g' },
+      { name: 'Sugar',   value: '~9g' },
+      { name: 'Sat. fat',value: '~1g' },
+      { name: 'Sodium',  value: '~68mg' },
     ],
     ingredientSections: [
       {
@@ -601,13 +632,21 @@ const recipes = [
     tag: '🍲 Lean Gain · Freezer-Friendly',
     photo: 'passato.png',
     badges: ['⏱ ~50 min', '❄️ Freezable', '🍽 3 servings'],
+    servings: '3 portions',
+    servingSize: '~425g',
     macros: [
-      { value: '~415', label: 'Cal',      highlight: true },
-      { value: '~42g', label: 'Protein' },
-      { value: '~32g', label: 'Carbs' },
-      { value: '~10g', label: 'Fat' },
-      { value: '3',    label: 'Portions' },
-      { value: '3 mo', label: 'Freezer' },
+      { value: '353',  label: 'Cal',      highlight: true },
+      { value: '38g',  label: 'Protein' },
+      { value: '35g',  label: 'Carbs' },
+      { value: '7g',   label: 'Fat' },
+      { value: '3',    label: 'Servings' },
+      { value: '~425g', label: 'Per serving' },
+    ],
+    micros: [
+      { name: 'Fiber',   value: '~5g' },
+      { name: 'Sugar',   value: '~4g' },
+      { name: 'Sat. fat',value: '~1g' },
+      { name: 'Sodium',  value: '~174mg' },
     ],
     ingredientSections: [
       {
@@ -723,6 +762,10 @@ function renderList() {
 ═══════════════════════════════════════════════ */
 function renderDetail(recipe) {
   const detail = document.getElementById('recipeDetail');
+  const microsHTML = recipe.micros ? recipe.micros.map(m =>
+    `<div class="micro-item"><span class="micro-name">${m.name}</span><span class="micro-val">${m.value}</span></div>`
+  ).join('') : '';
+
   detail.innerHTML = `
     <div class="detail-hero">
       <img src="${recipe.photo}" alt="${recipe.title}"/>
@@ -737,7 +780,25 @@ function renderDetail(recipe) {
       </div>
     </div>
 
-    <div class="detail-macros">${recipe.macros.map(m => macroHTML(m, true)).join('')}</div>
+    <div class="detail-macros-wrap" id="macrosWrap">
+      <div class="detail-macros" onclick="toggleMicros()">
+        ${recipe.macros.map(m => `
+          <div class="detail-macro${m.highlight ? ' highlight' : ''}">
+            <span class="detail-macro-value">${m.value}</span>
+            <span class="detail-macro-label">${m.label}</span>
+          </div>`).join('')}
+      </div>
+      ${microsHTML ? `
+      <div class="detail-macros-hint" onclick="toggleMicros()">
+        Micronutrients
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="micro-panel">
+        <div class="micro-panel-inner">
+          <div class="micro-grid">${microsHTML}</div>
+        </div>
+      </div>` : ''}
+    </div>
 
     <div class="detail-badges">
       <div class="detail-badges-left">${recipe.badges.map(b => `<span class="detail-badge">${b}</span>`).join('')}</div>
@@ -770,6 +831,11 @@ function renderDetail(recipe) {
       </div>
     </div>
   `;
+}
+
+function toggleMicros() {
+  const wrap = document.getElementById('macrosWrap');
+  if (wrap) wrap.classList.toggle('open');
 }
 
 /* ═══════════════════════════════════════════════
