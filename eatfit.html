@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EatFit 💪</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest:     #2D5016;
+      --forest-mid: #3D6B20;
+      --forest-lt:  #4F7A2A;
+      --sage:       #8FAF6A;
+      --sage-pale:  #C8D9B0;
+      --cream:      #F7F0E3;
+      --cream-dark: #EDE3CF;
+      --wood:       #C8975A;
+      --wood-lt:    #DDB47A;
+      --wood-pale:  #F0DFC0;
+      --terracotta: #C05C2A;
+      --orange-lt:  #E8A060;
+      --ink:        #1C2910;
+      --text:       #2E3B20;
+      --muted:      #6B7A5A;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Urbanist', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--forest);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 60px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+    }
+    .nav-logo { font-size: 1.4rem; font-weight: 800; color: var(--cream); letter-spacing: -0.01em; }
+    .nav-right { display: flex; align-items: center; gap: 32px; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 0.78rem; font-weight: 600; color: var(--sage-pale); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--wood-lt); }
+
+    .unit-toggle {
+      display: flex; align-items: center;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px; padding: 3px; gap: 2px;
+    }
+    .unit-btn {
+      font-family: 'Urbanist', sans-serif; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 16px; border: none;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+      background: transparent; color: var(--sage-pale);
+    }
+    .unit-btn.active { background: var(--cream); color: var(--forest); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--forest);
+      padding: 36px 48px 32px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 120% at 100% 100%, rgba(200,151,90,0.15) 0%, transparent 65%),
+                  radial-gradient(ellipse 35% 60% at 5% 10%, rgba(90,138,52,0.2) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 860px; margin: 0 auto;
+    }
+    .hero-text { max-width: 66%; animation: fadeUp 0.7s ease both; }
+    .hero-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange-lt); margin-bottom: 8px; }
+    .hero-title {
+      font-size: clamp(1.75rem, 3vw, 2.4rem);
+      font-weight: 800; color: var(--cream); line-height: 1.1;
+      letter-spacing: -0.02em; margin-bottom: 10px;
+    }
+    .hero-title em { font-style: italic; color: var(--wood-lt); }
+    .hero-subtitle { font-size: 0.88rem; font-weight: 400; color: var(--sage-pale); line-height: 1.6; }
+
+    /* ── RECIPES SECTION ── */
+    .recipes-section { max-width: 860px; margin: 0 auto; padding: 40px 24px 96px; animation: fadeUp 0.7s 0.15s ease both; }
+
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .section-title { font-size: 1.4rem; font-weight: 800; color: var(--forest); letter-spacing: -0.02em; }
+
+    .filter-bar { display: flex; align-items: center; gap: 10px; }
+    .filter-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .filter-select {
+      appearance: none;
+      background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%236B7A5A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 11px center;
+      border: 1.5px solid var(--cream-dark); border-radius: 20px;
+      padding: 6px 32px 6px 13px;
+      font-family: 'Urbanist', sans-serif; font-size: 0.8rem; font-weight: 600; color: var(--text);
+      cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .filter-select:focus { outline: none; border-color: var(--forest-mid); box-shadow: 0 0 0 3px rgba(61,107,32,0.12); }
+
+    /* ── RECIPE CARDS ── */
+    .recipes-stack { display: flex; flex-direction: column; gap: 13px; }
+
+    .recipe-card {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 14px rgba(45,80,22,0.08), 0 1px 3px rgba(0,0,0,0.05);
+      border: 1px solid var(--cream-dark); transition: box-shadow 0.2s;
+    }
+    .recipe-card:hover { box-shadow: 0 4px 24px rgba(45,80,22,0.13); }
+
+    /* ── CARD HEADER (collapsed view) ── */
+    .card-header {
+      background: var(--forest-mid);
+      display: grid; grid-template-columns: 140px 1fr auto;
+      align-items: stretch;
+      cursor: pointer; user-select: none; transition: background 0.2s;
+      min-height: 110px;
+    }
+    .card-header:hover { background: var(--forest-lt); }
+
+    /* Photo thumbnail */
+    .card-photo {
+      width: 140px;
+      flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .recipe-card:hover .card-photo img { transform: scale(1.04); }
+    /* Gradient overlay blending photo into header */
+    .card-photo::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent 60%, var(--forest-mid) 100%);
+      pointer-events: none;
+    }
+    .recipe-card:hover .card-photo::after {
+      background: linear-gradient(to right, transparent 60%, var(--forest-lt) 100%);
+    }
+
+    .card-header-content { padding: 18px 20px; display: flex; flex-direction: column; justify-content: center; }
+
+    .card-meta-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; flex-wrap: wrap; }
+    .card-tag {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      color: var(--sage-pale); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+    }
+    .card-category-tag {
+      background: rgba(232,160,96,0.25); border: 1px solid rgba(232,160,96,0.4);
+      color: var(--orange-lt); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+    }
+    .card-title { font-size: 1.05rem; font-weight: 800; color: var(--cream); line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 3px; }
+    .card-subtitle { font-size: 0.76rem; font-weight: 400; color: var(--sage-pale); line-height: 1.45; }
+
+    .card-header-right { padding: 18px 20px 18px 8px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 9px; flex-shrink: 0; }
+    .card-badges { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+    .badge {
+      background: rgba(200,151,90,0.18); border: 1px solid rgba(200,151,90,0.35);
+      color: var(--wood-lt); font-size: 0.62rem; font-weight: 600;
+      padding: 3px 9px; border-radius: 20px; white-space: nowrap;
+    }
+    .expand-btn {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px;
+      padding: 4px 11px; color: var(--cream);
+      font-family: 'Urbanist', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; white-space: nowrap;
+    }
+    .expand-icon { width: 12px; height: 12px; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); flex-shrink: 0; }
+    .recipe-card.open .expand-icon { transform: rotate(180deg); }
+
+    /* ── MACROS BAR ── */
+    .macros-bar {
+      background: var(--wood-pale); border-bottom: 1px solid var(--cream-dark);
+      padding: 9px 26px; display: flex; align-items: stretch;
+    }
+    .macro-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 3px 5px; position: relative; }
+    .macro-item + .macro-item::before { content: ''; position: absolute; left: 0; top: 15%; height: 70%; width: 1px; background: var(--wood); opacity: 0.3; }
+    .macro-value { font-size: 0.95rem; font-weight: 800; color: var(--forest); line-height: 1; }
+    .macro-label { font-size: 0.56rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .macro-item.highlight .macro-value { color: var(--terracotta); }
+
+    /* ── COLLAPSIBLE ── */
+    .card-details { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .recipe-card.open .card-details { grid-template-rows: 1fr; }
+    .card-details-inner { overflow: hidden; }
+
+    /* ── CARD BODY ── */
+    .card-body { display: grid; grid-template-columns: 1fr 1.4fr; }
+
+    .ingredients-col { padding: 26px 22px; background: var(--cream); border-right: 1px solid var(--cream-dark); }
+    .col-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--forest); margin-bottom: 14px; display: flex; align-items: center; gap: 9px; }
+    .col-title-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--sage), transparent); }
+
+    .ingredients-list { list-style: none; }
+    .ing-section-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 10px 0 4px; border-bottom: 1px solid var(--cream-dark); margin-bottom: 2px; }
+    .ingredient-item { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 6px 0; border-bottom: 1px dashed rgba(0,0,0,0.07); }
+    .ingredient-item:last-child { border-bottom: none; }
+    .ingredient-name { font-size: 0.83rem; font-weight: 400; color: var(--text); line-height: 1.4; }
+    .ingredient-note { display: block; font-size: 0.69rem; color: var(--muted); font-style: italic; }
+
+    .amt-metric { }
+    .amt-imperial { display: none; }
+    body.imperial .amt-metric { display: none; }
+    body.imperial .amt-imperial { display: inline; }
+
+    .ingredient-amount { font-size: 0.71rem; font-weight: 700; color: var(--terracotta); white-space: nowrap; background: rgba(192,92,42,0.08); padding: 2px 7px; border-radius: 7px; flex-shrink: 0; }
+
+    .steps-col { padding: 26px 26px; }
+    .steps-list { display: flex; flex-direction: column; gap: 13px; }
+    .step-item { display: grid; grid-template-columns: 27px 1fr; gap: 10px; align-items: start; }
+    .step-num { width: 27px; height: 27px; border-radius: 50%; background: var(--forest); color: var(--cream); font-weight: 800; font-size: 0.72rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .step-text { font-size: 0.83rem; font-weight: 400; line-height: 1.65; color: var(--text); padding-top: 3px; }
+    .sub-steps { list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+    .sub-steps li { font-size: 0.79rem; color: var(--muted); padding-left: 12px; position: relative; line-height: 1.55; }
+    .sub-steps li::before { content: '–'; position: absolute; left: 0; color: var(--sage); }
+
+    /* ── NOTES ── */
+    .card-notes { padding: 16px 26px; background: var(--forest); display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .note-block { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 15px; }
+    .note-block.full { grid-column: 1 / -1; }
+    .note-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange-lt); margin-bottom: 4px; }
+    .note-text { font-size: 0.77rem; font-weight: 400; color: var(--sage-pale); line-height: 1.6; }
+
+    .empty-state { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 0.88rem; font-weight: 500; display: none; }
+
+    footer { background: var(--ink); text-align: center; padding: 22px; font-size: 0.73rem; font-weight: 500; color: var(--muted); letter-spacing: 0.04em; }
+    footer span { color: var(--wood); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 700px) {
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .hero { padding: 28px 20px 24px; }
+      .hero-text { max-width: 100%; }
+      .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .card-header { grid-template-columns: 100px 1fr auto; min-height: 90px; }
+      .card-photo { width: 100px; }
+      .card-header-content { padding: 14px 14px; }
+      .card-header-right { padding: 14px 14px 14px 6px; }
+      .macros-bar { padding: 7px 14px; flex-wrap: wrap; }
+      .card-body { grid-template-columns: 1fr; }
+      .ingredients-col { border-right: none; border-bottom: 1px solid var(--cream-dark); padding: 20px 16px; }
+      .steps-col { padding: 20px 16px; }
+      .card-notes { grid-template-columns: 1fr; padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">EatFit 💪</div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#recipes">Recipes</a></li>
+      <li><a href="#recipes">Snacks</a></li>
+      <li><a href="#recipes">Meal Prep</a></li>
+    </ul>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric</button>
+      <button class="unit-btn" id="btnImperial" onclick="setUnit('imperial')">Imperial</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Real food · High protein · No excuses</div>
+      <h1 class="hero-title">Recipes that <em>work as hard</em> as you do.</h1>
+      <p class="hero-subtitle">High-protein meals and snacks built for people who actually care about what they eat.</p>
+    </div>
+  </div>
+</section>
+
+<section id="recipes" class="recipes-section">
+  <div class="section-header">
+    <h2 class="section-title">Recipes</h2>
+    <div class="filter-bar">
+      <span class="filter-label">Filter</span>
+      <select class="filter-select" id="categoryFilter" onchange="filterRecipes()">
+        <option value="all">All categories</option>
+        <option value="snack">Snack</option>
+        <option value="entree">Entree</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="recipes-stack" id="recipesStack">
+
+    <!-- ══ OAT BALLS ══ -->
+    <article class="recipe-card" data-category="snack">
+      <div class="card-header" onclick="toggleRecipe(this)">
+        <div class="card-photo">
+          <img src="https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=280&h=220&fit=crop&crop=center&auto=format" alt="Protein oat balls" loading="lazy"/>
+        </div>
+        <div class="card-header-content">
+          <div class="card-meta-row">
+            <span class="card-tag">🏋️ High Protein · No Bake</span>
+            <span class="card-category-tag">Snack</span>
+          </div>
+          <div class="card-title">Low-Sugar Protein Oat Balls</div>
+          <div class="card-subtitle">No-bake, honey-sweetened, zero sugar. Makes 12 balls (~32g each).</div>
+        </div>
+        <div class="card-header-right">
+          <div class="card-badges">
+            <span class="badge">⏱ 15 min</span>
+            <span class="badge">🧊 No bake</span>
+            <span class="badge">🍫 12 servings</span>
+          </div>
+          <div class="expand-btn">
+            <span>View recipe</span>
+            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="macros-bar">
+        <div class="macro-item highlight"><span class="macro-value">145</span><span class="macro-label">Cal</span></div>
+        <div class="macro-item"><span class="macro-value">8g</span><span class="macro-label">Protein</span></div>
+        <div class="macro-item"><span class="macro-value">11g</span><span class="macro-label">Carbs</span></div>
+        <div class="macro-item"><span class="macro-value">~6g</span><span class="macro-label">Net Carbs</span></div>
+        <div class="macro-item"><span class="macro-value">7g</span><span class="macro-label">Fat</span></div>
+        <div class="macro-item"><span class="macro-value">~0g</span><span class="macro-label">Sugar</span></div>
+      </div>
+
+      <div class="card-details">
+        <div class="card-details-inner">
+          <div class="card-body">
+            <div class="ingredients-col">
+              <div class="col-title">Ingredients <span class="col-title-line"></span></div>
+              <ul class="ingredients-list">
+                <li class="ingredient-item"><span class="ingredient-name">Rolled oats</span><span class="ingredient-amount"><span class="amt-metric">149g</span><span class="amt-imperial">5¼ oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Vanilla protein powder</span><span class="ingredient-amount"><span class="amt-metric">60g</span><span class="amt-imperial">2⅛ oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Natural peanut or almond butter<span class="ingredient-note">no added sugar</span></span><span class="ingredient-amount"><span class="amt-metric">120g</span><span class="amt-imperial">4¼ oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Wholesome Yum Zero Sugar Honey</span><span class="ingredient-amount"><span class="amt-metric">50g</span><span class="amt-imperial">1¾ oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Ground flaxseed</span><span class="ingredient-amount"><span class="amt-metric">19g</span><span class="amt-imperial">⅔ oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Unsweetened cocoa powder</span><span class="ingredient-amount"><span class="amt-metric">9g</span><span class="amt-imperial">⅓ oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Vanilla extract</span><span class="ingredient-amount"><span class="amt-metric">5ml</span><span class="amt-imperial">1 tsp</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Cinnamon</span><span class="ingredient-amount"><span class="amt-metric">½ tsp</span><span class="amt-imperial">½ tsp</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Salt</span><span class="ingredient-amount"><span class="amt-metric">1 pinch</span><span class="amt-imperial">1 pinch</span></span></li>
+              </ul>
+            </div>
+            <div class="steps-col">
+              <div class="col-title">Steps <span class="col-title-line"></span></div>
+              <ol class="steps-list">
+                <li class="step-item"><div class="step-num">1</div><p class="step-text">Combine rolled oats, protein powder, ground flaxseed, cocoa powder, cinnamon, and salt in a large bowl. Whisk until evenly mixed — this prevents protein powder clumps later.</p></li>
+                <li class="step-item"><div class="step-num">2</div><p class="step-text">Add nut butter, zero sugar honey, and vanilla extract to the dry mix. Stir well until a thick dough forms. The honey substitute acts as the binder — no extra liquid needed.</p></li>
+                <li class="step-item"><div class="step-num">3</div><p class="step-text">Press a small amount between your fingers — it should hold together without crumbling or sticking. Too dry? Add 5–10g more honey. Too wet? Add a small handful of oats.</p></li>
+                <li class="step-item"><div class="step-num">4</div><p class="step-text">Scoop ~32g of dough per ball and roll between your palms. If the dough is sticking, chill for 10 minutes first — cold dough is much easier to handle.</p></li>
+                <li class="step-item"><div class="step-num">5</div><p class="step-text">Place on a parchment-lined plate or container. Cover and refrigerate overnight (minimum 30 min). Overnight is best — oats fully absorb moisture and balls firm up properly.</p></li>
+              </ol>
+            </div>
+          </div>
+          <div class="card-notes">
+            <div class="note-block"><div class="note-label">🧊 Storage</div><p class="note-text">Up to 1 week in an airtight container in the fridge. To freeze: lay individually on a tray first, then transfer to a bag — lasts 2 months frozen.</p></div>
+            <div class="note-block"><div class="note-label">📊 Macro note</div><p class="note-text">Macros vary by brand. Whey + peanut butter = lower calorie end. Plant protein + almond butter = slightly higher.</p></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ══ CHICKEN MEATBALLS ══ -->
+    <article class="recipe-card" data-category="entree">
+      <div class="card-header" onclick="toggleRecipe(this)">
+        <div class="card-photo">
+          <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=280&h=220&fit=crop&crop=center&auto=format" alt="Mediterranean chicken meatballs" loading="lazy"/>
+        </div>
+        <div class="card-header-content">
+          <div class="card-meta-row">
+            <span class="card-tag">🫒 Mediterranean · Baked</span>
+            <span class="card-category-tag">Entree</span>
+          </div>
+          <div class="card-title">Mediterranean Chicken Meatballs</div>
+          <div class="card-subtitle">Flavorful, moist, and oven-baked in 30 minutes. Serves 4.</div>
+        </div>
+        <div class="card-header-right">
+          <div class="card-badges">
+            <span class="badge">⏱ 30 min</span>
+            <span class="badge">🔥 400°F</span>
+            <span class="badge">🍽 4 servings</span>
+          </div>
+          <div class="expand-btn">
+            <span>View recipe</span>
+            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="macros-bar">
+        <div class="macro-item highlight"><span class="macro-value">~320</span><span class="macro-label">Cal</span></div>
+        <div class="macro-item"><span class="macro-value">~32g</span><span class="macro-label">Protein</span></div>
+        <div class="macro-item"><span class="macro-value">~12g</span><span class="macro-label">Carbs</span></div>
+        <div class="macro-item"><span class="macro-value">~14g</span><span class="macro-label">Fat</span></div>
+        <div class="macro-item"><span class="macro-value">15</span><span class="macro-label">Meatballs</span></div>
+        <div class="macro-item"><span class="macro-value">~3–4</span><span class="macro-label">per serving</span></div>
+      </div>
+
+      <div class="card-details">
+        <div class="card-details-inner">
+          <div class="card-body">
+            <div class="ingredients-col">
+              <div class="col-title">Ingredients <span class="col-title-line"></span></div>
+              <ul class="ingredients-list">
+                <li class="ingredient-item"><span class="ingredient-name">Ground chicken</span><span class="ingredient-amount"><span class="amt-metric">450g</span><span class="amt-imperial">1 lb</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Panko breadcrumbs</span><span class="ingredient-amount"><span class="amt-metric">55g</span><span class="amt-imperial">½ cup</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Large egg</span><span class="ingredient-amount"><span class="amt-metric">1</span><span class="amt-imperial">1</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Feta<span class="ingredient-note">crumbled</span></span><span class="ingredient-amount"><span class="amt-metric">75g</span><span class="amt-imperial">½ cup</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Red onion<span class="ingredient-note">finely diced</span></span><span class="ingredient-amount"><span class="amt-metric">40g</span><span class="amt-imperial">¼ cup</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Sun dried tomatoes<span class="ingredient-note">finely diced</span></span><span class="ingredient-amount"><span class="amt-metric">35g</span><span class="amt-imperial">¼ cup</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Dried dill</span><span class="ingredient-amount"><span class="amt-metric">¼ tsp</span><span class="amt-imperial">¼ tsp</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Dried oregano</span><span class="ingredient-amount"><span class="amt-metric">¼ tsp</span><span class="amt-imperial">¼ tsp</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Garlic powder</span><span class="ingredient-amount"><span class="amt-metric">½ tsp</span><span class="amt-imperial">½ tsp</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Salt</span><span class="ingredient-amount"><span class="amt-metric">½ tsp</span><span class="amt-imperial">½ tsp</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Olive oil</span><span class="ingredient-amount"><span class="amt-metric">30ml</span><span class="amt-imperial">2 tbsp</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Fresh mint<span class="ingredient-note">optional, garnish</span></span><span class="ingredient-amount"><span class="amt-metric">1 tbsp</span><span class="amt-imperial">1 tbsp</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Tzatziki sauce<span class="ingredient-note">for dipping</span></span><span class="ingredient-amount"><span class="amt-metric">to serve</span><span class="amt-imperial">to serve</span></span></li>
+              </ul>
+            </div>
+            <div class="steps-col">
+              <div class="col-title">Steps <span class="col-title-line"></span></div>
+              <ol class="steps-list">
+                <li class="step-item"><div class="step-num">1</div><p class="step-text">Preheat oven to <span class="amt-metric">200°C</span><span class="amt-imperial">400°F</span>.</p></li>
+                <li class="step-item"><div class="step-num">2</div><p class="step-text">Combine all ingredients in a large bowl and mix with your hands until thoroughly combined.</p></li>
+                <li class="step-item"><div class="step-num">3</div><p class="step-text">Roll the seasoned meat into 15 golf ball-sized meatballs and place on a parchment-lined baking sheet in 5 rows of 3.</p></li>
+                <li class="step-item"><div class="step-num">4</div><p class="step-text">Bake for 25–30 minutes, or until cooked through.</p></li>
+                <li class="step-item"><div class="step-num">5</div><p class="step-text">Rest for 2 minutes, then sprinkle with optional fresh mint and serve with tzatziki for dipping.</p></li>
+              </ol>
+            </div>
+          </div>
+          <div class="card-notes">
+            <div class="note-block"><div class="note-label">🍽 Serving ideas</div><p class="note-text">Great over rice, on a salad, or as an appetizer with tzatziki. Stores well in the fridge for up to 4 days.</p></div>
+            <div class="note-block"><div class="note-label">📊 Macro note</div><p class="note-text">Estimates per serving (~3–4 meatballs). Will vary based on feta brand and whether tzatziki is included.</p></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ══ PASSATO DI VERDURE ══ -->
+    <article class="recipe-card" data-category="entree">
+      <div class="card-header" onclick="toggleRecipe(this)">
+        <div class="card-photo">
+          <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=280&h=220&fit=crop&crop=center&auto=format" alt="Blended vegetable soup with shredded chicken" loading="lazy"/>
+        </div>
+        <div class="card-header-content">
+          <div class="card-meta-row">
+            <span class="card-tag">🍲 Lean Gain · Freezer-Friendly</span>
+            <span class="card-category-tag">Entree</span>
+          </div>
+          <div class="card-title">Passato di Verdure with Shredded Chicken</div>
+          <div class="card-subtitle">High-protein blended vegetable soup. 3 portions, built for the freezer.</div>
+        </div>
+        <div class="card-header-right">
+          <div class="card-badges">
+            <span class="badge">⏱ ~50 min</span>
+            <span class="badge">❄️ Freezable</span>
+            <span class="badge">🍽 3 servings</span>
+          </div>
+          <div class="expand-btn">
+            <span>View recipe</span>
+            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="macros-bar">
+        <div class="macro-item highlight"><span class="macro-value">~415</span><span class="macro-label">Cal</span></div>
+        <div class="macro-item"><span class="macro-value">~42g</span><span class="macro-label">Protein</span></div>
+        <div class="macro-item"><span class="macro-value">~32g</span><span class="macro-label">Carbs</span></div>
+        <div class="macro-item"><span class="macro-value">~10g</span><span class="macro-label">Fat</span></div>
+        <div class="macro-item"><span class="macro-value">3</span><span class="macro-label">Portions</span></div>
+        <div class="macro-item"><span class="macro-value">3 mo</span><span class="macro-label">Freezer life</span></div>
+      </div>
+
+      <div class="card-details">
+        <div class="card-details-inner">
+          <div class="card-body">
+            <div class="ingredients-col">
+              <div class="col-title">Ingredients <span class="col-title-line"></span></div>
+              <ul class="ingredients-list">
+                <li class="ing-section-label">Vegetables</li>
+                <li class="ingredient-item"><span class="ingredient-name">Tuscan kale (cavolo nero)</span><span class="ingredient-amount"><span class="amt-metric">200g</span><span class="amt-imperial">7 oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Potato<span class="ingredient-note">peeled, cubed</span></span><span class="ingredient-amount"><span class="amt-metric">300g</span><span class="amt-imperial">10½ oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Carrots<span class="ingredient-note">sliced</span></span><span class="ingredient-amount"><span class="amt-metric">150g</span><span class="amt-imperial">5¼ oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Leek<span class="ingredient-note">white + light green, sliced</span></span><span class="ingredient-amount"><span class="amt-metric">150g</span><span class="amt-imperial">5¼ oz</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Water or light stock</span><span class="ingredient-amount"><span class="amt-metric">to cover</span><span class="amt-imperial">to cover</span></span></li>
+                <li class="ing-section-label">Protein</li>
+                <li class="ingredient-item"><span class="ingredient-name">Boneless skinless chicken breast<span class="ingredient-note">raw</span></span><span class="ingredient-amount"><span class="amt-metric">475g</span><span class="amt-imperial">~1 lb</span></span></li>
+                <li class="ing-section-label">Fats & Finish</li>
+                <li class="ingredient-item"><span class="ingredient-name">Olive oil</span><span class="ingredient-amount"><span class="amt-metric">7ml</span><span class="amt-imperial">½ tbsp</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Parmesan<span class="ingredient-note">add when serving, not before freezing</span></span><span class="ingredient-amount"><span class="amt-metric">~10g/bowl</span><span class="amt-imperial">~⅓ oz/bowl</span></span></li>
+                <li class="ing-section-label">Seasoning</li>
+                <li class="ingredient-item"><span class="ingredient-name">Salt + black pepper</span><span class="ingredient-amount"><span class="amt-metric">to taste</span><span class="amt-imperial">to taste</span></span></li>
+                <li class="ingredient-item"><span class="ingredient-name">Bay leaf + garlic clove<span class="ingredient-note">optional</span></span><span class="ingredient-amount"><span class="amt-metric">optional</span><span class="amt-imperial">optional</span></span></li>
+              </ul>
+            </div>
+            <div class="steps-col">
+              <div class="col-title">Steps <span class="col-title-line"></span></div>
+              <ol class="steps-list">
+                <li class="step-item">
+                  <div class="step-num">1</div>
+                  <p class="step-text"><strong>Poach the chicken first.</strong> Place breasts in a single layer, cover with cold water or stock, add salt and optional aromatics. Bring to a gentle simmer, cover, and cook 12–15 min. Turn heat off and rest 5 min in liquid. Remove, shred with forks, and reserve the poaching liquid — it's now broth.</p>
+                </li>
+                <li class="step-item">
+                  <div class="step-num">2</div>
+                  <p class="step-text"><strong>Cook the vegetables.</strong> In a large pot combine kale, potato, carrot, and leek. Cover with the chicken poaching liquid (top up with water if needed). Add salt. Simmer 20–25 min until very soft.</p>
+                </li>
+                <li class="step-item">
+                  <div class="step-num">3</div>
+                  <p class="step-text"><strong>Blend the soup.</strong> Remove bay leaf / garlic if used. Blend until smooth with an immersion blender. Stir in olive oil, taste and adjust salt.</p>
+                </li>
+                <li class="step-item">
+                  <div class="step-num">4</div>
+                  <p class="step-text"><strong>Add chicken — do not boil.</strong> Return soup to low heat, add all shredded chicken, stir gently, heat 5–7 minutes only. Boiling toughens the chicken.</p>
+                </li>
+                <li class="step-item">
+                  <div class="step-num">5</div>
+                  <p class="step-text"><strong>Portion and store.</strong> Cool slightly, divide into 3 equal portions (~<span class="amt-metric">425g</span><span class="amt-imperial">15 oz</span> each). Refrigerate 1; freeze the other 2 in Soupercubes or airtight containers.</p>
+                </li>
+              </ol>
+            </div>
+          </div>
+          <div class="card-notes">
+            <div class="note-block"><div class="note-label">❄️ Freezing & reheating</div><p class="note-text">Freezes up to 3 months. Thaw overnight in the fridge or reheat gently on the stovetop. Medium microwave power is fine. Do not boil.</p></div>
+            <div class="note-block"><div class="note-label">🧀 Parmesan tip</div><p class="note-text">Add ~10g Parmesan per bowl only after reheating — never before freezing. It melts into the hot soup and finishes the dish.</p></div>
+            <div class="note-block full"><div class="note-label">📊 Macro note</div><p class="note-text">~400–430 kcal · ~40–45g protein · ~30–35g carbs · ~9–11g fat per portion. This is a proper lean-gain dinner, not a "light soup." Parmesan not included — add ~40 kcal / 4g protein per 10g.</p></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <div class="empty-state" id="emptyState">No recipes found for this category.</div>
+  </div>
+</section>
+
+<footer>
+  Made with care &nbsp;·&nbsp; <span>EatFit 💪</span> &nbsp;·&nbsp; Your personal recipe book
+</footer>
+
+<script>
+  function toggleRecipe(header) {
+    const card = header.closest('.recipe-card');
+    const btn = card.querySelector('.expand-btn span');
+    const isOpen = card.classList.toggle('open');
+    btn.textContent = isOpen ? 'Close' : 'View recipe';
+  }
+
+  function filterRecipes() {
+    const val = document.getElementById('categoryFilter').value;
+    const cards = document.querySelectorAll('.recipe-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const show = val === 'all' || card.dataset.category === val;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function setUnit(unit) {
+    document.body.classList.toggle('imperial', unit === 'imperial');
+    document.getElementById('btnMetric').classList.toggle('active', unit === 'metric');
+    document.getElementById('btnImperial').classList.toggle('active', unit === 'imperial');
+  }
+</script>
+</body>
+</html>
