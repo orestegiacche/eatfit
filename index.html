@@ -347,6 +347,7 @@
           <option value="all">All categories</option>
           <option value="snack">Snack</option>
           <option value="entree">Entree</option>
+          <option value="side">Side</option>
         </select>
         <div class="unit-toggle">
           <button class="unit-btn active" id="btnMetric" onclick="setUnit('metric')">Metric</button>
@@ -464,6 +465,48 @@ const recipes = [
     notes: [
       { label: '🍽 Serving ideas', text: 'Great over rice, on a salad, or as an appetizer with tzatziki. Stores well in the fridge for up to 4 days.' },
       { label: '📊 Macro note', text: 'Estimates per serving (~3–4 meatballs). Will vary based on feta brand and whether tzatziki is included.' },
+    ]
+  },
+
+  {
+    id: 'sweet-potatoes',
+    title: 'Roasted Sweet Potatoes',
+    subtitle: 'Simple, wholesome, and caramelized to perfection. As many servings as you need.',
+    category: 'side',
+    tag: '🍠 Simple · Wholesome',
+    photo: 'sweet-potatoes.jpg',
+    badges: ['⏱ 5 min prep', '🔥 400°F / 200°C', '⏳ 25–35 min'],
+    macros: [
+      { value: '~100', label: 'Cal',     highlight: true },
+      { value: '~2g',  label: 'Protein' },
+      { value: '~23g', label: 'Carbs' },
+      { value: '~0g',  label: 'Fat' },
+      { value: '~7g',  label: 'Fiber' },
+      { value: 'per half', label: 'Serving' },
+    ],
+    ingredientSections: [
+      {
+        items: [
+          { name: 'Sweet potatoes',    metric: 'as needed',  imperial: 'as needed' },
+          { name: 'Avocado oil spray', metric: 'to coat',    imperial: 'to coat' },
+          { name: 'Salt',              metric: 'to taste',   imperial: 'to taste' },
+          { name: 'Black pepper',      metric: 'to taste',   imperial: 'to taste' },
+          { name: 'Paprika',           metric: 'to taste',   imperial: 'to taste' },
+        ]
+      }
+    ],
+    steps: [
+      'Preheat your oven to <span class="amt-metric">200°C</span><span class="amt-imperial">400°F</span>.',
+      'Wash the sweet potatoes thoroughly. No need to peel.',
+      'Slice each potato in half lengthwise down the middle.',
+      'Poke each piece all over with a fork — this lets steam escape and helps the inside cook through evenly.',
+      'Spray both sides generously with avocado oil, then season both sides with salt, pepper, and paprika.',
+      'Place face-down on a parchment-lined baking sheet.',
+      'Roast for 25–35 minutes, until the cut side is golden and caramelized and the flesh is fork-tender. Larger potatoes will need the full 35 minutes.',
+    ],
+    notes: [
+      { label: '🍠 Why face-down?', text: 'Placing the cut side directly on the hot pan traps steam inside the potato while searing the flat surface — you get fluffy, tender flesh and a beautifully caramelized crust in one shot.' },
+      { label: '📊 Macro note', text: 'Macros are approximate per half potato (medium size). Will vary based on potato size.' },
     ]
   },
 
